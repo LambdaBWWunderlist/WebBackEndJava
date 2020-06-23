@@ -14,7 +14,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import javax.sql.DataSource;
 
 @Configuration
-public class DataSourceConfig {
+public class DataSourceConfig
+{
     private static boolean stop = false;
 
     @Autowired
@@ -22,14 +23,17 @@ public class DataSourceConfig {
     @Autowired
     private Environment env;
 
-    private static void checkEnvironmentVariable(String envvar) {
-        if (System.getenv(envvar) == null) {
+    private static void checkEnvironmentVariable(String envvar)
+    {
+        if (System.getenv(envvar) == null)
+        {
             stop = true;
         }
     }
 
     @Bean(name = "dsCustom")
-    public DataSource dataSource() {
+    public DataSource dataSource()
+    {
         String myUrlString = "";
         String myDriverClass = "";
         String myDBUser = "";
@@ -37,14 +41,17 @@ public class DataSourceConfig {
 
         String dbValue = env.getProperty("local.run.db");
 
-        if (dbValue.equalsIgnoreCase("POSTGRESQL")) {
+        if (dbValue.equalsIgnoreCase("POSTGRESQL"))
+        {
             checkEnvironmentVariable("MYDBHOST");
             checkEnvironmentVariable("MYDBNAME");
             checkEnvironmentVariable("MYDBUSER");
             checkEnvironmentVariable("MYDBPASSWORD");
 
-            if (stop) {
-                int exitCode = SpringApplication.exit(appContext, (ExitCodeGenerator) () -> 1);
+            if (stop)
+            {
+                int exitCode = SpringApplication.exit(appContext,
+                        (ExitCodeGenerator) () -> 1);
                 System.exit(exitCode);
             }
 
@@ -52,7 +59,9 @@ public class DataSourceConfig {
             myDriverClass = "org.postgresql.Driver";
             myDBUser = System.getenv("MYDBUSER");
             myDBPassword = System.getenv("MYDBPASSWORD");
-        } else {
+        } else
+        {
+            // Assumes H2
             myUrlString = "jdbc:h2:mem:testdb";
             myDriverClass = "org.h2.Driver";
             myDBUser = "sa";
@@ -72,7 +81,8 @@ public class DataSourceConfig {
     @Autowired
     public JdbcTemplate jdbcTemplate(
             @Qualifier("dsCustom")
-                    DataSource dsCustom) {
+                    DataSource dsCustom)
+    {
         return new JdbcTemplate(dsCustom);
     }
 }

@@ -11,6 +11,7 @@ public class WunderlistApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(WunderlistApplication.class, args);
+
     }
 
 }

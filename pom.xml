@@ -109,7 +109,7 @@
     </dependencies>
 
     <build>
-        <finalName>wunderlist-java</finalName>
+        <finalName>wlist-java</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
