@@ -36,4 +36,29 @@ public class UserController {
         User rtnUser = userService.findUserById(id);
         return new ResponseEntity<>(rtnUser, HttpStatus.OK);
     }
+
+    @PutMapping(value = "/user/{id}", consumes = {"application/json"})
+    public ResponseEntity<?> updateFullUser(@PathVariable long id, @Valid @RequestBody User user){
+        user.setUserid(id);
+        userService.save(user);
+        return new ResponseEntity<>(user.getUsername() + " was updated", HttpStatus.OK);
+    }
+
+    @PatchMapping(value = "/user", consumes = {"application/json"})
+    public ResponseEntity<?> updatePartialUser(@Valid @RequestBody User user){
+        userService.update(user);
+        return new ResponseEntity<>(user.getUsername() + " has been updated", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/contains/{query}", produces = {"application/json"})
+    public ResponseEntity<?> getByNameContaining(@PathVariable String query){
+        List<User> rtnUserList = userService.findByNameContaining(query);
+        return new ResponseEntity<>(rtnUserList, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/user/{id}", produces = {"application/json"})
+    public ResponseEntity<?> deleteUserById(@PathVariable long id){
+        userService.delete(id);
+        return new ResponseEntity<>("User has been deleted", HttpStatus.OK);
+    }
 }

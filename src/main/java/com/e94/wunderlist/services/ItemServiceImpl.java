@@ -1,6 +1,7 @@
 package com.e94.wunderlist.services;
 
 import com.e94.wunderlist.exceptions.ResourceFoundException;
+import com.e94.wunderlist.exceptions.ResourceNotFoundException;
 import com.e94.wunderlist.models.Item;
 import com.e94.wunderlist.models.Role;
 import com.e94.wunderlist.models.User;
@@ -24,9 +25,7 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private UserAuditing userAuditing;
-
+    @Transactional
     @Override
     public Item addNewItem(String itemname) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -48,7 +47,27 @@ public class ItemServiceImpl implements ItemService {
 
     @Transactional
     @Override
-    public Item save(Item item) {
-            return itemRepository.save(item);
+    public Item update(Item newItem, long id) {
+        Item currentItem = itemRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("not found"));
+        currentItem.setItemname(newItem.getItemname());
+
+        return itemRepository.save(currentItem);
+    }
+
+    @Override
+    public List<Item> getItemsByUserId(long id) {
+        User currentUser = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("not found"));
+        return currentUser.getItems();
+    }
+
+    @Override
+    public Item findItemById(long id) {
+        return itemRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("not found"));
+    }
+
+    @Override
+    public void delete(long id) {
+        Item item = itemRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("not found"));
+        itemRepository.delete(item);
     }
 }

@@ -8,6 +8,8 @@ import com.e94.wunderlist.models.User;
 import com.e94.wunderlist.models.UserRoles;
 import com.e94.wunderlist.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -116,8 +118,9 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User update(User user, long id) {
-        User currentUser = findUserById(id);
+    public User update(User user) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = userrepos.findByUsername(authentication.getName());
 
             if (user.getUsername() != null) {
                 currentUser.setUsername(user.getUsername().toLowerCase());
@@ -131,23 +134,8 @@ public class UserServiceImpl implements UserService {
                 currentUser.setEmail(user.getEmail().toLowerCase());
             }
 
-            if (user.getRoles().size() > 0)
-            {
-                for (UserRoles ur : currentUser.getRoles()) {
-                    deleteUserRole(ur.getUser().getUserid(),
-                            ur.getRole().getRoleid());
-                }
-
-
-                for (UserRoles ur : user.getRoles()) {
-                    addUserRole(currentUser.getUserid(), ur.getRole().getRoleid());
-                }
-
             return userrepos.save(currentUser);
 
-        } else {
-                throw new ResourceNotFoundException("This user is not authorized to make change");
-        }
     }
 
     @Transactional
