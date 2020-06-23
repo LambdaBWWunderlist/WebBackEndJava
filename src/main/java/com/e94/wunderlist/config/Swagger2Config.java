@@ -31,12 +31,10 @@ public class Swagger2Config {
     private ApiInfo apiEndPointsInfo()
     {
         return new ApiInfoBuilder().title("WunderList Java Backend")
-                .description("Overview")
-                .contact(new Contact("Erick Canales",
-                        "TBD",
+                .description("Useful Links")
+                .contact(new Contact("Wunderlist Java Repository",
+                        "https://github.com/LambdaBWWunderlist/WebBackEndJava",
                         "e94canales@gmail.com"))
-                .license("MIT")
-                .licenseUrl("TBD")
                 .version("1.0.0")
                 .build();
     }
