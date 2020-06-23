@@ -1,5 +1,7 @@
 package com.e94.wunderlist.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -17,10 +19,15 @@ public class Role extends Auditor {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "role")
-    private List<UserRoles> roles = new ArrayList<>();
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties(value = "users")
+    private List<UserRoles> users = new ArrayList<>();
 
     public Role() {
+    }
+
+    public Role(@NotNull String name) {
+        this.name = name.toUpperCase();
     }
 
     public long getRoleid() {
@@ -39,11 +46,11 @@ public class Role extends Auditor {
         this.name = name;
     }
 
-    public List<UserRoles> getRoles() {
-        return roles;
+    public List<UserRoles> getUsers() {
+        return users;
     }
 
-    public void setRoles(List<UserRoles> roles) {
-        this.roles = roles;
+    public void setUsers(List<UserRoles> users) {
+        this.users = users;
     }
 }

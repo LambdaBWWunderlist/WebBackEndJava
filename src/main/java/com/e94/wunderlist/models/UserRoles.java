@@ -1,5 +1,7 @@
 package com.e94.wunderlist.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -11,14 +13,21 @@ public class UserRoles extends Auditor implements Serializable {
     @Id
     @ManyToOne
     @JoinColumn(name = "userid")
+    @JsonIgnoreProperties("roles")
     private User user;
 
     @Id
     @ManyToOne
     @JoinColumn(name = "roleid")
+    @JsonIgnoreProperties("users")
     private Role role;
 
     public UserRoles() {
+    }
+
+    public UserRoles(User user, Role role) {
+        this.user = user;
+        this.role = role;
     }
 
     public User getUser() {

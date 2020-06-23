@@ -1,5 +1,7 @@
 package com.e94.wunderlist.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
@@ -18,7 +20,8 @@ public class Item extends Auditor {
     private String recurring;
 
     @ManyToOne
-    @JoinColumn(name = "userid", nullable = false)
+    @JoinColumn(name = "userid")
+    @JsonIgnoreProperties("items")
     private User user;
 
     public Item() {
@@ -30,6 +33,12 @@ public class Item extends Auditor {
         this.recurring = recurring;
         this.user = user;
     }
+
+    public Item(String itemname, User user) {
+        this.itemname = itemname;
+        this.user = user;
+    }
+
 
     public long getItemid() {
         return itemid;

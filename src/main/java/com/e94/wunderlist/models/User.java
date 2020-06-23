@@ -2,7 +2,11 @@ package com.e94.wunderlist.models;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -29,16 +33,19 @@ public class User extends Auditor {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties("user")
     private List<Item> items = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<UserRoles> users = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties(value = "user")
+    private List<UserRoles> roles = new ArrayList<>();
 
     public User() {
     }
 
-    public User(String username, @NotNull String password, @NotNull String email, List<Item> items, List<UserRoles> users) {
+    public User(String username, @NotNull String password, @NotNull String email, List<Item> items, List<UserRoles> roles) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -48,10 +55,10 @@ public class User extends Auditor {
         }
         this.items = items;
 
-        for (UserRoles ur : users){
+        for (UserRoles ur : roles){
             ur.setUser(this);
         }
-        this.users = users;
+        this.roles = roles;
     }
 
     public long getUserid() {
@@ -75,6 +82,11 @@ public class User extends Auditor {
     }
 
     public void setPassword(String password) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        this.password = passwordEncoder.encode(password);
+    }
+
+    public void setPasswordNoEncrypt(String password) {
         this.password = password;
     }
 
@@ -94,11 +106,26 @@ public class User extends Auditor {
         this.items = items;
     }
 
-    public List<UserRoles> getUsers() {
-        return users;
+    public List<UserRoles> getRoles() {
+        return roles;
     }
 
-    public void setUsers(List<UserRoles> users) {
-        this.users = users;
+    public void setRoles(List<UserRoles> roles) {
+        this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        roles.add(new UserRoles(this, role));
+    }
+
+    @JsonIgnore
+    public List<SimpleGrantedAuthority> getAuthority() {
+        List<SimpleGrantedAuthority> rtnList = new ArrayList<>();
+        for (UserRoles r : this.roles) {
+            String myRole = "ROLE_" + r.getRole().getName().toUpperCase();
+            rtnList.add(new SimpleGrantedAuthority(myRole));
+        }
+
+        return rtnList;
     }
 }
