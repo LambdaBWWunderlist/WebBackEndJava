@@ -8,7 +8,7 @@ Below is an overall view of the database tables. Note that ROLES and USERROLES a
 ### Endpoints & Model Information
 
 You can test endpoints straight from your browser by using the interactive app
-[Here](http://wunderlist-java.herokuapp.com/swagger-ui.html)
+[Here](http://wunderlist-java.herokuapp.com/)
 
 
 
