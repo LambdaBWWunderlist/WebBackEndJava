@@ -5,7 +5,6 @@ import com.e94.wunderlist.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -24,12 +23,17 @@ public class UserController {
         return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping(value = "/users", consumes = {"application/json"})
     public ResponseEntity<?> postUser(@Valid @RequestBody User newUser){
         newUser.setUserid(0);
         newUser = userService.save(newUser);
 
         return new ResponseEntity<>("created", HttpStatus.CREATED);
+    }
+
+    @GetMapping(value = "/user/{id}", produces = {"application/json"})
+    public ResponseEntity<?> getUserById(@PathVariable long id){
+        User rtnUser = userService.findUserById(id);
+        return new ResponseEntity<>(rtnUser, HttpStatus.OK);
     }
 }

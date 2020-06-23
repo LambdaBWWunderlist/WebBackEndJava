@@ -2,6 +2,7 @@ package com.e94.wunderlist.services;
 
 import com.e94.wunderlist.exceptions.ResourceFoundException;
 import com.e94.wunderlist.exceptions.ResourceNotFoundException;
+import com.e94.wunderlist.models.Item;
 import com.e94.wunderlist.models.Role;
 import com.e94.wunderlist.models.User;
 import com.e94.wunderlist.models.UserRoles;
@@ -96,13 +97,17 @@ public class UserServiceImpl implements UserService {
             }
         } else
         {
-            // add the new roles for the user we are replacing
             for (UserRoles ur : user.getRoles())
             {
                 addUserRole(newUser.getUserid(),
                         ur.getRole()
                                 .getRoleid());
             }
+        }
+
+        newUser.getItems().clear();
+        for (Item i : user.getItems()){
+            newUser.getItems().add(new Item(i.getItemname(), newUser));
         }
 
 

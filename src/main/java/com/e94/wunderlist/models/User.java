@@ -34,7 +34,7 @@ public class User extends Auditor {
     private String email;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties("user")
+    @JsonIgnoreProperties(value = "user", allowSetters = true)
     private List<Item> items = new ArrayList<>();
 
 
@@ -45,15 +45,10 @@ public class User extends Auditor {
     public User() {
     }
 
-    public User(String username, @NotNull String password, @NotNull String email, List<Item> items, List<UserRoles> roles) {
+    public User(String username, @NotNull String password, @NotNull String email, List<UserRoles> roles) {
         setUsername(username);
         setPassword(password);
         setEmail(email);
-
-        for (Item i : items){
-            i.setUser(this);
-        }
-        this.items = items;
 
         for (UserRoles ur : roles){
             ur.setUser(this);

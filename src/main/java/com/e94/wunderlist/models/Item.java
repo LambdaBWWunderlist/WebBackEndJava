@@ -21,7 +21,7 @@ public class Item extends Auditor {
 
     @ManyToOne
     @JoinColumn(name = "userid")
-    @JsonIgnoreProperties("items")
+    @JsonIgnoreProperties(value = "items", allowSetters = true)
     private User user;
 
     public Item() {

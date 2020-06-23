@@ -1,6 +1,8 @@
 package com.e94.wunderlist.services;
 
+import com.e94.wunderlist.exceptions.ResourceFoundException;
 import com.e94.wunderlist.models.Item;
+import com.e94.wunderlist.models.Role;
 import com.e94.wunderlist.models.User;
 import com.e94.wunderlist.repositories.ItemRepository;
 import com.e94.wunderlist.repositories.UserRepository;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,5 +44,11 @@ public class ItemServiceImpl implements ItemService {
         itemRepository.findAll().iterator().forEachRemaining(items::add);
 
         return items;
+    }
+
+    @Transactional
+    @Override
+    public Item save(Item item) {
+            return itemRepository.save(item);
     }
 }

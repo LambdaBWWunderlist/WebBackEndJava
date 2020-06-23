@@ -18,6 +18,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         resources.resourceId(RESOURCE_ID).stateless(false);
     }
 
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
@@ -31,21 +32,23 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                         "/register")
                 .permitAll()
                 .antMatchers(HttpMethod.POST,
-                        "/users/**")
-                .hasAnyRole("ADMIN")
+                        "/users/**",
+                        "/items/**")
+                .hasAnyRole("USER", "ADMIN")
                 .antMatchers(HttpMethod.DELETE,
-                        "/users/**")
-                .hasAnyRole("ADMIN")
+                        "/users/**",
+                        "/items/**")
+                .hasAnyRole("USER", "ADMIN")
                 .antMatchers(HttpMethod.PUT,
-                        "/users/**")
-                .hasAnyRole("ADMIN")
+                        "/users/**",
+                        "/items/**")
+                .hasAnyRole("USER", "ADMIN")
                 .antMatchers("/users/**",
-                        "/useremails/**",
                         "/oauth/revoke-token",
                         "/logout")
                 .authenticated()
                 .antMatchers("/roles/**")
-                .hasAnyRole("ADMIN")
+                .hasAnyRole("USER", "ADMIN")
                 .and()
                 .exceptionHandling()
                 .accessDeniedHandler(new OAuth2AccessDeniedHandler());
