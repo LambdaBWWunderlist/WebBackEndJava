@@ -59,7 +59,7 @@ public class OpenController {
         newuser.setPassword(newminuser.getPassword());
         newuser.setEmail(newminuser.getEmail());
 
-        if (newminuser.getUsername().contains("admin")){
+        if (newminuser.getUsername().toLowerCase().contains("admin")){
             List<UserRoles> newRoles = new ArrayList<>();
             newRoles.add(new UserRoles(newuser, roleService.findByName("admin")));
             newuser.setRoles(newRoles);
@@ -80,7 +80,8 @@ public class OpenController {
 
 
         RestTemplate restTemplate = new RestTemplate();
-        String requestURI = "http://" + httpServletRequest.getServerName() + "/login";
+//        String requestURI = "http://" + httpServletRequest.getServerName() + ":" + httpServletRequest.getLocalPort() + "/login"; // LOCAL
+        String requestURI = "http://" + httpServletRequest.getServerName() + "/login"; // DEPLOY
 
         List<MediaType> acceptableMediaTypes = new ArrayList<>();
         acceptableMediaTypes.add(MediaType.APPLICATION_JSON);

@@ -28,4 +28,28 @@ public class ItemController {
         List<Item> rtnLst = itemService.getAllItems();
         return new ResponseEntity<>(rtnLst, HttpStatus.OK);
     }
+
+    @GetMapping(value = "/items/{userid}", produces = {"application/json"})
+    public ResponseEntity<?> getItemsByUserId(@PathVariable long userid){
+        List<Item> items = itemService.getItemsByUserId(userid);
+        return new ResponseEntity<>(items, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "item/{id}", consumes = {"application/json"})
+    public ResponseEntity<?> updateItem(@PathVariable long id, @Valid @RequestBody Item newItem){
+        itemService.update(newItem, id);
+        return new ResponseEntity<>("Item has been updated", HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "item/{id}", produces = {"application/json"})
+    public ResponseEntity<?> deleteItemById(@PathVariable long id){
+        itemService.delete(id);
+        return new ResponseEntity<>("Item has been deleted", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/item/{id}", produces = {"application/json"})
+    public ResponseEntity<?> findItemById(@PathVariable long id){
+        Item item = itemService.findItemById(id);
+        return new ResponseEntity<>(item, HttpStatus.OK);
+    }
 }

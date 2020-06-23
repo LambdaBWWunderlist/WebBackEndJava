@@ -8,4 +8,12 @@ public interface ItemService {
     Item addNewItem(String itemname);
 
     List<Item> getAllItems();
+
+    Item findItemById(long id);
+
+    Item update(Item item, long id);
+
+    void delete(long id);
+
+    List<Item> getItemsByUserId(long id);
 }
