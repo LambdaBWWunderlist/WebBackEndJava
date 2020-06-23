@@ -54,7 +54,7 @@ axios.post("http://wlist-java.herokuapp.com/login", `grant_type=password&usernam
         localStorage.setItem("token", res.data.access_token);
 })
 ```
-Everything should be left how it is except how you want to handle the response on .then, and the USERNAME and PASSWORD. This should be the same username and password when your created an account using the register endpoint.
+Everything should be left how it is except how you want to handle the response on .then, and the USERNAME and PASSWORD. This should be the same username and password when you created an account using the register endpoint.
 
 
 
