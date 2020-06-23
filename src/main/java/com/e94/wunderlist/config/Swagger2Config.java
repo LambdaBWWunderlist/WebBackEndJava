@@ -35,6 +35,8 @@ public class Swagger2Config {
                 .contact(new Contact("Wunderlist Java Repository",
                         "https://github.com/LambdaBWWunderlist/WebBackEndJava",
                         "e94canales@gmail.com"))
+                .license("MIT")
+                .licenseUrl("TBD")
                 .version("1.0.0")
                 .build();
     }

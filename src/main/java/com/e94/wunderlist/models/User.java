@@ -46,9 +46,9 @@ public class User extends Auditor {
     }
 
     public User(String username, @NotNull String password, @NotNull String email, List<Item> items, List<UserRoles> roles) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
+        setUsername(username);
+        setPassword(password);
+        setEmail(email);
 
         for (Item i : items){
             i.setUser(this);
@@ -74,7 +74,7 @@ public class User extends Auditor {
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.username = username.toLowerCase();
     }
 
     public String getPassword() {
@@ -95,7 +95,7 @@ public class User extends Auditor {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.toLowerCase();
     }
 
     public List<Item> getItems() {
