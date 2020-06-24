@@ -19,6 +19,7 @@ public class Item extends Auditor {
 
     private String recurring;
 
+
     @ManyToOne
     @JoinColumn(name = "userid")
     @JsonIgnoreProperties(value = "items", allowSetters = true)

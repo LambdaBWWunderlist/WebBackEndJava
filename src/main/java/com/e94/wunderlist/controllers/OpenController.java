@@ -80,8 +80,8 @@ public class OpenController {
 
 
         RestTemplate restTemplate = new RestTemplate();
-//        String requestURI = "http://" + httpServletRequest.getServerName() + ":" + httpServletRequest.getLocalPort() + "/login"; // LOCAL
-        String requestURI = "http://" + httpServletRequest.getServerName() + "/login"; // DEPLOY
+        String requestURI = "http://" + httpServletRequest.getServerName() + ":" + httpServletRequest.getLocalPort() + "/login"; // LOCAL
+//        String requestURI = "http://" + httpServletRequest.getServerName() + "/login"; // DEPLOY
 
         List<MediaType> acceptableMediaTypes = new ArrayList<>();
         acceptableMediaTypes.add(MediaType.APPLICATION_JSON);
